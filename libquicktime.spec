@@ -1,21 +1,21 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	0.9.2
+Version:	0.9.3
 Release:	0.1
 License:	LGPL
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	1b42ca12966526647fa9a1b14fb947a1
-Patch0:		%{name}-what.patch
+# Source0-md5:	38d9dbe8a75ea0be13ffa16b858502ae
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	XFree86-devel
+# avcodec-acl = 0.4.8acl ???
 BuildRequires:	ffmpeg-devel
 BuildRequires:	gtk+-devel >= 1.2.8
-BuildRequires:	libavc1394-devel
+BuildRequires:	libavc1394-devel >= 0.3.1
 BuildRequires:	libdv-devel
 BuildRequires:	libjpeg-devel
-#jpeg-mmx-devel
+# jpeg-mmx-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libvorbis-devel
@@ -49,7 +49,7 @@ extensions:
 Summary:	Header files for libquicktime library
 Summary(pl):	Pliki nag³ówkowe biblioteki libquicktime
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for libquicktime library.
@@ -61,7 +61,7 @@ Pliki nag³ówkowe biblioteki libquicktime.
 Summary:	Static libquicktime library
 Summary(pl):	Statyczna biblioteka libquicktime
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static libquicktime library.
@@ -69,11 +69,24 @@ Static libquicktime library.
 %description static -l pl
 Statyczna biblioteka libquicktime.
 
+%package utils
+Summary:	libquicktime utilities
+Summary(pl):	Narzêdzia do libquicktime
+Group:		Applications/Multimedia
+Requires:	%{name} = %{version}-%{release}
+
+%description utils
+libquicktime utilities.
+
+%description utils -l pl
+Narzêdzia do libquicktime.
+
 %prep
 %setup -q
 
 %build
-%configure
+%configure \
+	--enable-static
 %{__make}
 
 %install
@@ -81,6 +94,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+rm -f $RPM_BUILD_ROOT%{_libdir}/libquicktime/*.{la,a}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -91,16 +106,49 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README TODO
-%attr(755,root,root) %{_libdir}/lib*.so.*.*.*
+# R: glib, zlib
+%attr(755,root,root) %{_libdir}/libquicktime.so.*.*.*
+# R: libdv, libraw1394, libavc1394
+%attr(755,root,root) %{_libdir}/libquicktime1394.so.*.*.*
+%dir %{_libdir}/libquicktime
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_audiocodec.so
+# R: libdv
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_dv.so
+# R: avcodec-acl
+#%attr(755,root,root) %{_libdir}/libquicktime/lqt_ffmpeg.so
+# R: lame-libs
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_lame.so
+# R: libjpeg
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_mjpeg.so
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_opendivx.so
+# R: libpng
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_png.so
+%ifarch %{ix86}
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_rtjpeg.so
+%endif
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_videocodec.so
+# R: libogg, libvorbis
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_vorbis.so
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
-%{_includedir}/foo
-%{_aclocaldir}/*.m4
-%{_pkgconfigdir}/*.pc
+%attr(755,root,root) %{_bindir}/lqt-config
+%attr(755,root,root) %{_libdir}/libquicktime.so
+%attr(755,root,root) %{_libdir}/libquicktime1394.so
+%{_libdir}/libquicktime.la
+%{_libdir}/libquicktime1394.la
+%{_includedir}/quicktime
+%{_aclocaldir}/lqt.m4
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/lib*.a
+%{_libdir}/libquicktime.a
+%{_libdir}/libquicktime1394.a
+
+%files utils
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/libquicktime_config
+%attr(755,root,root) %{_bindir}/lqtplay
+%attr(755,root,root) %{_bindir}/lqt_transcode
+%attr(755,root,root) %{_bindir}/qt*
+%{_mandir}/man1/lqtplay.1*
