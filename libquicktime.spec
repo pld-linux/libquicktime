@@ -12,6 +12,7 @@ BuildRequires:	XFree86-devel
 # avcodec-acl = 0.4.8acl ???
 BuildRequires:	ffmpeg-devel
 BuildRequires:	gtk+-devel >= 1.2.8
+BuildRequires:	lame-libs-devel
 BuildRequires:	libavc1394-devel >= 0.3.1
 BuildRequires:	libdv-devel
 BuildRequires:	libjpeg-devel
