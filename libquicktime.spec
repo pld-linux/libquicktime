@@ -127,9 +127,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_opendivx.so
 # R: libpng
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_png.so
-%ifarch %{ix86} %{x8664}
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_rtjpeg.so
-%endif
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_videocodec.so
 # R: libogg, libvorbis
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_vorbis.so
