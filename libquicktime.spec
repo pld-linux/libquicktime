@@ -1,3 +1,5 @@
+# TODO
+# - libavcodec: Missing
 Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
@@ -9,6 +11,7 @@ Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 # Source0-md5:	e5c977567df59c876c50ac191bb1caf6
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	XFree86-devel
+BuildRequires:	automake
 # avcodec-acl = 0.4.8acl ???
 BuildRequires:	ffmpeg-devel
 BuildRequires:	gtk+-devel >= 1.2.8
@@ -43,8 +46,6 @@ extensions:
 - Special API extensions allow access to the codec registry.
   Applications can get important information about the codecs, their
   settable parameters etc. at runtime.
-
-#%description -l pl
 
 %package devel
 Summary:	Header files for libquicktime library
@@ -86,6 +87,7 @@ Narzêdzia do libquicktime.
 %setup -q
 
 %build
+cp -f /usr/share/automake/config.sub .
 %configure \
 	--enable-static
 %{__make}
@@ -125,7 +127,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_opendivx.so
 # R: libpng
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_png.so
-%ifarch %{ix86}
+%ifarch %{ix86} %{x8664}
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_rtjpeg.so
 %endif
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_videocodec.so
