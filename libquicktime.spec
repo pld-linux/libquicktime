@@ -4,7 +4,7 @@ Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
 Version:	0.9.7
-Release:	0.1
+Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
