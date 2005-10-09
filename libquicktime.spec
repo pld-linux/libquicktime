@@ -1,12 +1,12 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	0.9.3
+Version:	0.9.7
 Release:	0.1
 License:	LGPL
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	38d9dbe8a75ea0be13ffa16b858502ae
+# Source0-md5:	e5c977567df59c876c50ac191bb1caf6
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	XFree86-devel
 # avcodec-acl = 0.4.8acl ???
@@ -43,7 +43,7 @@ extensions:
 - Special API extensions allow access to the codec registry.
   Applications can get important information about the codecs, their
   settable parameters etc. at runtime.
- 
+
 #%description -l pl
 
 %package devel
@@ -107,6 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README TODO
+%attr(755,root,root) %{_bindir}/lqtvrplay
 # R: glib, zlib
 %attr(755,root,root) %{_libdir}/libquicktime.so.*.*.*
 # R: libdv, libraw1394, libavc1394
@@ -138,8 +139,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libquicktime1394.so
 %{_libdir}/libquicktime.la
 %{_libdir}/libquicktime1394.la
-%{_includedir}/quicktime
+%{_includedir}/lqt
 %{_aclocaldir}/lqt.m4
+%{_libdir}/pkgconfig/libquicktime.pc
+%{_libdir}/pkgconfig/libquicktime.pc
 
 %files static
 %defattr(644,root,root,755)
