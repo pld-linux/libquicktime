@@ -1,5 +1,5 @@
 # TODO
-# - libavcodec: Missing
+# - libavcodec: Missing (ffmpeg?)
 Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
@@ -30,7 +30,7 @@ libquicktime is a library for reading and writing quicktime files. It
 is based on the quicktime4linux library, with the following
 extensions:
 - Sourcetree upgraded with autoconf/automake/libtool and all the other
-  stuff, people like in "standard" linux libraries.
+  stuff, people like in "standard" Linux libraries.
 - All 3rd party libraries (jpeg, OggVorbis) were removed to reduce
   download size, compilation time and code duplication on users
   harddisks. Instead, the sytemwide installed libraries are used.
@@ -46,6 +46,29 @@ extensions:
 - Special API extensions allow access to the codec registry.
   Applications can get important information about the codecs, their
   settable parameters etc. at runtime.
+
+%description -l pl
+libquicktime to biblioteka do odczytu i zapisu plików quicktime. Jest
+oparta na bibliotece quicktime4linux z nastêpuj±cymi zmianami:
+- drzewo ¼róde³ zosta³o przerobione na u¿ywanie
+  autoconfa/automake'a/libtola itp. narzêdzi, tak jak w standardowych
+  bibliotekach linuksowych
+- wszystkie zewnêtrzne biblioteki (jpeg, OggVorbis) zosta³y usuniête w
+  celu zmniejszenia ilo¶ci danych do ¶ci±gania, czasu kompilacji i
+  powielonego kodu na dyskach u¿ytkowników; zamiast tego u¿ywane s±
+  biblioteki systemowe
+- wszystkie kodeki zosta³y przeniesione do dynamicznie ³adowanych
+  modu³ów; pozwala to rozprowadzaæ kodeki bez ¼róde³ (lub kodeki z
+  niekompatybilnymi licencjami) jako osobne pakiety
+- w przeciwieñstwie do innych bibliotek quicktime jest ¼ród³owo
+  kompatybilna z quicktime4linux; programy takie jak cinelerra czy
+  xmovie mog± byæ kompilowane z libquicktime
+- kodeki tak¿e s± ¼ród³owo kompatybilne z quicktime4linux, wiêc
+  przenoszenie kodeków pomiêdzy quicktime4linux i libquicktime nie
+  wymaga zbyt wiele pracy
+- dodano specjalne rozszerzenia API pozwalaj±ce na dostêp do rejestru
+  kodeków; aplikacje mog± pobieraæ wa¿ne informacje o kodekach, ich
+  parametry itp. w czasie dzia³ania aplikacji.
 
 %package devel
 Summary:	Header files for libquicktime library
@@ -118,7 +141,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_audiocodec.so
 # R: libdv
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_dv.so
-# R: avcodec-acl
+# R: avcodec-acl (ffmpeg?)
 #%attr(755,root,root) %{_libdir}/libquicktime/lqt_ffmpeg.so
 # R: lame-libs
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_lame.so
@@ -141,7 +164,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libquicktime1394.la
 %{_includedir}/lqt
 %{_aclocaldir}/lqt.m4
-%{_libdir}/pkgconfig/libquicktime.pc
+%{_pkgconfigdir}/libquicktime.pc
 
 %files static
 %defattr(644,root,root,755)
