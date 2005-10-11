@@ -1,3 +1,10 @@
+#
+# Conditional build:
+%bcond_with	mmx	# use MMX in rtjpeg plugin
+#
+%ifarch athlon pentium3 pentium4 %{x8664}
+%define	with_mmx	1
+%endif
 # TODO
 # - libavcodec: Missing (ffmpeg?)
 Summary:	Library for reading and writing quicktime files
@@ -9,20 +16,25 @@ License:	LGPL
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 # Source0-md5:	e5c977567df59c876c50ac191bb1caf6
+Patch0:		%{name}-link.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	XFree86-devel
+BuildRequires:	alsa-lib-devel >= 0.9
+BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 # avcodec-acl = 0.4.8acl ???
 BuildRequires:	ffmpeg-devel
-BuildRequires:	gtk+-devel >= 1.2.8
-BuildRequires:	lame-libs-devel
+BuildRequires:	gtk+2-devel >= 2:2.4.0
+BuildRequires:	lame-libs-devel >= 3.93
 BuildRequires:	libavc1394-devel >= 0.3.1
-BuildRequires:	libdv-devel
-BuildRequires:	libjpeg-devel
+BuildRequires:	libdv-devel >= 0.102
+BuildRequires:	libjpeg-devel >= 6b
 # jpeg-mmx-devel
-BuildRequires:	libpng-devel
+BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libraw1394-devel >= 0.9
-BuildRequires:	libvorbis-devel
+BuildRequires:	libtool
+BuildRequires:	libvorbis-devel >= 1:1.0
+BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -75,6 +87,7 @@ Summary:	Header files for libquicktime library
 Summary(pl):	Pliki nag³ówkowe biblioteki libquicktime
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	zlib-devel
 
 %description devel
 Header files for libquicktime library.
@@ -108,10 +121,19 @@ Narzêdzia do libquicktime.
 
 %prep
 %setup -q
+%patch0 -p1
+
+# evil, sets CFLAGS basing on /proc/cpuinfo
+echo 'AC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' > m4/lqt_opt_cflags.m4
 
 %build
-cp -f /usr/share/automake/config.sub .
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
+	%{!?with_mmx:--disable-mmx} \
 	--enable-static
 %{__make}
 
