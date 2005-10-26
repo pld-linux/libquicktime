@@ -1,0 +1,12 @@
+--- libquicktime-0.9.7/acinclude.m4.orig	2005-01-09 23:50:53.000000000 +0100
++++ libquicktime-0.9.7/acinclude.m4	2005-10-26 19:02:23.392364784 +0200
+@@ -387,7 +387,8 @@
+     if(LIBAVCODEC_BUILD < $1)
+       return -1;
+     output=fopen("avcodec_version", "w");
+-    fprintf(output, LIBAVCODEC_VERSION);
++#define VQUOTE(a) #a
++    fprintf(output, VQUOTE(LIBAVCODEC_VERSION));
+     fclose(output);
+     return 0;
+     }
