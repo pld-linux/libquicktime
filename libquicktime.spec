@@ -1,12 +1,11 @@
 #
 # Conditional build:
-%bcond_with	mmx	# use MMX in rtjpeg plugin
+%bcond_with	mmx	# use MMX in rtjpeg plugin (no runtime detection)
+%bcond_without	ffmpeg	# don't build ffmpeg plugin
 #
 %ifarch athlon pentium3 pentium4 %{x8664}
 %define	with_mmx	1
 %endif
-# TODO
-# - libavcodec: Missing (ffmpeg?)
 Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
@@ -17,13 +16,13 @@ Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 # Source0-md5:	e5c977567df59c876c50ac191bb1caf6
 Patch0:		%{name}-link.patch
+Patch1:		%{name}-ffmpeg.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	XFree86-devel
 BuildRequires:	alsa-lib-devel >= 0.9
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
-# avcodec-acl = 0.4.8acl ???
-BuildRequires:	ffmpeg-devel
+%{?with_ffmpeg:BuildRequires:	ffmpeg-devel >= 0.4.9-1}
 BuildRequires:	gtk+2-devel >= 2:2.4.0
 BuildRequires:	lame-libs-devel >= 3.93
 BuildRequires:	libavc1394-devel >= 0.3.1
@@ -88,6 +87,7 @@ Summary(pl):	Pliki nag³ówkowe biblioteki libquicktime
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	zlib-devel
+Obsoletes:	quicktime4linux-devel
 
 %description devel
 Header files for libquicktime library.
@@ -100,12 +100,50 @@ Summary:	Static libquicktime library
 Summary(pl):	Statyczna biblioteka libquicktime
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
+Obsoletes:	quicktime4linux-static
 
 %description static
 Static libquicktime library.
 
 %description static -l pl
 Statyczna biblioteka libquicktime.
+
+%package firewire
+Summary:	libquicktime1394 library
+Summary(pl):	Biblioteka libquicktime1394
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description firewire
+libquicktime1394 library.
+
+%description firewire -l pl
+Biblioteka libquicktime1394.
+
+%package firewire-devel
+Summary:	Header files for libquicktime1394 library
+Summary(pl):	Pliki nag³ówkowe biblioteki libquicktime1394
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-firewire = %{version}-%{release}
+
+%description firewire-devel
+Header files for libquicktime1394 library.
+
+%description firewire-devel -l pl
+Pliki nag³ówkowe biblioteki libquicktime1394.
+
+%package firewire-static
+Summary:	Static libquicktime1394 library
+Summary(pl):	Statyczna biblioteka libquicktime1394
+Group:		Development/Libraries
+Requires:	%{name}-firewire-devel = %{version}-%{release}
+
+%description firewire-static
+Static libquicktime1394 library.
+
+%description firewire-static -l pl
+Statyczna biblioteka libquicktime1394.
 
 %package utils
 Summary:	libquicktime utilities
@@ -119,9 +157,58 @@ libquicktime utilities.
 %description utils -l pl
 Narzêdzia do libquicktime.
 
+%package dv
+Summary:	DV plugin for libquicktime
+Summary(pl):	Wtyczka DV dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description dv
+DV plugin for libquicktime.
+
+%description dv -l pl
+Wtyczka DV dla libquicktime.
+
+%package ffmpeg
+Summary:	ffmpeg plugin for libquicktime
+Summary(pl):	Wtyczka ffmpeg dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description ffmpeg
+ffmpeg plugin for libquicktime.
+
+%description ffmpeg -l pl
+Wtyczka ffmpeg dla libquicktime.
+
+%package lame
+Summary:	lame plugin for libquicktime
+Summary(pl):	Wtyczka lame dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description lame
+lame plugin for libquicktime.
+
+%description lame -l pl
+Wtyczka lame dla libquicktime.
+
+%package vorbis
+Summary:	Ogg Vorbis plugin for libquicktime
+Summary(pl):	Wtyczka Ogg Vorbis dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description vorbis
+Ogg Vorbis plugin for libquicktime.
+
+%description vorbis -l pl
+Wtyczka Ogg Vorbis dla libquicktime.
+
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 # evil, sets CFLAGS basing on /proc/cpuinfo
 echo 'AC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' > m4/lqt_opt_cflags.m4
@@ -151,22 +238,17 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
+%post	firewire -p /sbin/ldconfig
+%postun	firewire -p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
 %doc README TODO
 %attr(755,root,root) %{_bindir}/lqtvrplay
-# R: glib, zlib
+# R: zlib
 %attr(755,root,root) %{_libdir}/libquicktime.so.*.*.*
-# R: libdv, libraw1394, libavc1394
-%attr(755,root,root) %{_libdir}/libquicktime1394.so.*.*.*
 %dir %{_libdir}/libquicktime
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_audiocodec.so
-# R: libdv
-%attr(755,root,root) %{_libdir}/libquicktime/lqt_dv.so
-# R: avcodec-acl (ffmpeg?)
-#%attr(755,root,root) %{_libdir}/libquicktime/lqt_ffmpeg.so
-# R: lame-libs
-%attr(755,root,root) %{_libdir}/libquicktime/lqt_lame.so
 # R: libjpeg
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_mjpeg.so
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_opendivx.so
@@ -174,23 +256,33 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_png.so
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_rtjpeg.so
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_videocodec.so
-# R: libogg, libvorbis
-%attr(755,root,root) %{_libdir}/libquicktime/lqt_vorbis.so
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/lqt-config
 %attr(755,root,root) %{_libdir}/libquicktime.so
-%attr(755,root,root) %{_libdir}/libquicktime1394.so
 %{_libdir}/libquicktime.la
-%{_libdir}/libquicktime1394.la
 %{_includedir}/lqt
+%exclude %{_includedir}/lqt/lqt1394_config.h
 %{_aclocaldir}/lqt.m4
 %{_pkgconfigdir}/libquicktime.pc
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libquicktime.a
+
+%files firewire
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime1394.so.*.*.*
+
+%files firewire-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime1394.so
+%{_libdir}/libquicktime1394.la
+%{_includedir}/lqt/lqt1394_config.h
+
+%files firewire-static
+%defattr(644,root,root,755)
 %{_libdir}/libquicktime1394.a
 
 %files utils
@@ -200,3 +292,21 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/lqt_transcode
 %attr(755,root,root) %{_bindir}/qt*
 %{_mandir}/man1/lqtplay.1*
+
+%files dv
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_dv.so
+
+%if %{with ffmpeg}
+%files ffmpeg
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_ffmpeg.so
+%endif
+
+%files lame
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_lame.so
+
+%files vorbis
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_vorbis.so
