@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_with	mmx	# use MMX in rtjpeg plugin (no runtime detection)
-%bcond_with	ffmpeg	# build ffmpeg plugin
+%bcond_without	ffmpeg	# ffmpeg plugin
 #
 %ifarch athlon pentium3 pentium4 %{x8664}
 %define	with_mmx	1
@@ -10,7 +10,7 @@ Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
 Version:	0.9.7
-Release:	5
+Release:	6
 License:	LGPL
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
