@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_with	mmx	# use MMX in rtjpeg plugin (no runtime detection)
 %bcond_without	ffmpeg	# ffmpeg plugin
+%bcond_without	gpl	# build LGPL library (disables some plugins)
 #
 %ifarch athlon pentium3 pentium4 %{x8664}
 %define	with_mmx	1
@@ -9,20 +10,27 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	0.9.7
-Release:	6
+Version:	0.9.8
+Release:	1
+%if %{with gpl}
+License:	GPL
+%else
 License:	LGPL
+%endif
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	e5c977567df59c876c50ac191bb1caf6
+# Source0-md5:	2efb64ed0e1ccae66d0cadc1e806935a
 Patch0:		%{name}-link.patch
-Patch1:		%{name}-ffmpeg.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	XFree86-devel
 BuildRequires:	alsa-lib-devel >= 0.9
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
-%{?with_ffmpeg:BuildRequires:	ffmpeg-devel >= 0.4.9-3.20050806}
+%if %{with gpl}
+BuildRequires:	faac-devel >= 1.24
+BuildRequires:	faad2-devel >= 2.0
+%endif
+%{?with_ffmpeg:BuildRequires:	ffmpeg-devel >= 0.4.9-3.20051020}
 BuildRequires:	gtk+2-devel >= 2:2.4.0
 BuildRequires:	lame-libs-devel >= 3.93
 BuildRequires:	libavc1394-devel >= 0.3.1
@@ -34,6 +42,9 @@ BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
 BuildRequires:	zlib-devel
+Obsoletes:	libquicktime-firewire
+Obsoletes:	libquicktime-firewire-devel
+Obsoletes:	libquicktime-firewire-static
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -108,43 +119,6 @@ Static libquicktime library.
 %description static -l pl
 Statyczna biblioteka libquicktime.
 
-%package firewire
-Summary:	libquicktime1394 library
-Summary(pl):	Biblioteka libquicktime1394
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description firewire
-libquicktime1394 library.
-
-%description firewire -l pl
-Biblioteka libquicktime1394.
-
-%package firewire-devel
-Summary:	Header files for libquicktime1394 library
-Summary(pl):	Pliki nag³ówkowe biblioteki libquicktime1394
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-Requires:	%{name}-firewire = %{version}-%{release}
-
-%description firewire-devel
-Header files for libquicktime1394 library.
-
-%description firewire-devel -l pl
-Pliki nag³ówkowe biblioteki libquicktime1394.
-
-%package firewire-static
-Summary:	Static libquicktime1394 library
-Summary(pl):	Statyczna biblioteka libquicktime1394
-Group:		Development/Libraries
-Requires:	%{name}-firewire-devel = %{version}-%{release}
-
-%description firewire-static
-Static libquicktime1394 library.
-
-%description firewire-static -l pl
-Statyczna biblioteka libquicktime1394.
-
 %package utils
 Summary:	libquicktime utilities
 Summary(pl):	Narzêdzia do libquicktime
@@ -168,6 +142,30 @@ DV plugin for libquicktime.
 
 %description dv -l pl
 Wtyczka DV dla libquicktime.
+
+%package faac
+Summary:	faac plugin for libquicktime
+Summary(pl):	Wtyczka faac dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description faac
+faac plugin for libquicktime.
+
+%description faac -l pl
+Wtyczka faac dla libquicktime.
+
+%package faad2
+Summary:	faad2 plugin for libquicktime
+Summary(pl):	Wtyczka faad2 dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description faad2
+faad2 plugin for libquicktime.
+
+%description faad2 -l pl
+Wtyczka faad2 dla libquicktime.
 
 %package ffmpeg
 Summary:	ffmpeg plugin for libquicktime
@@ -208,9 +206,9 @@ Wtyczka Ogg Vorbis dla libquicktime.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
-# evil, sets CFLAGS basing on /proc/cpuinfo
+# evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
+# (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
 echo 'AC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' > m4/lqt_opt_cflags.m4
 
 %build
@@ -220,6 +218,7 @@ echo 'AC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' > m4/lqt_opt_cflags.m4
 %{__autoheader}
 %{__automake}
 %configure \
+	%{?with_gpl:--enable-gpl} \
 	%{!?with_mmx:--disable-mmx} \
 	--enable-static
 %{__make}
@@ -238,13 +237,9 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%post	firewire -p /sbin/ldconfig
-%postun	firewire -p /sbin/ldconfig
-
 %files
 %defattr(644,root,root,755)
 %doc README TODO
-%attr(755,root,root) %{_bindir}/lqtvrplay
 # R: zlib
 %attr(755,root,root) %{_libdir}/libquicktime.so.*.*.*
 %dir %{_libdir}/libquicktime
@@ -263,27 +258,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libquicktime.so
 %{_libdir}/libquicktime.la
 %{_includedir}/lqt
-%exclude %{_includedir}/lqt/lqt1394_config.h
 %{_aclocaldir}/lqt.m4
 %{_pkgconfigdir}/libquicktime.pc
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libquicktime.a
-
-%files firewire
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libquicktime1394.so.*.*.*
-
-%files firewire-devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libquicktime1394.so
-%{_libdir}/libquicktime1394.la
-%{_includedir}/lqt/lqt1394_config.h
-
-%files firewire-static
-%defattr(644,root,root,755)
-%{_libdir}/libquicktime1394.a
 
 %files utils
 %defattr(644,root,root,755)
@@ -296,6 +276,16 @@ rm -rf $RPM_BUILD_ROOT
 %files dv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_dv.so
+
+%if %{with gpl}
+%files faac
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_faac.so
+
+%files faad2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_faad2.so
+%endif
 
 %if %{with ffmpeg}
 %files ffmpeg
