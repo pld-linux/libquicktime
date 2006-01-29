@@ -41,6 +41,7 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
+BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel
 Obsoletes:	libquicktime-firewire
 Obsoletes:	libquicktime-firewire-devel
