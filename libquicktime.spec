@@ -5,7 +5,7 @@
 %bcond_without	gpl	# build LGPL library (disables some plugins)
 #
 %ifarch athlon pentium3 pentium4 %{x8664}
-%define	with_mmx	1
+%define		with_mmx	1
 %endif
 Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
@@ -22,7 +22,7 @@ Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 # Source0-md5:	2efb64ed0e1ccae66d0cadc1e806935a
 Patch0:		%{name}-link.patch
 URL:		http://libquicktime.sourceforge.net/
-BuildRequires:	XFree86-devel
+BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel >= 0.9
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -42,6 +42,9 @@ BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
 BuildRequires:	pkgconfig
+BuildRequires:	xorg-lib-libXaw-devel
+BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	zlib-devel
 Obsoletes:	libquicktime-firewire
 Obsoletes:	libquicktime-firewire-devel
