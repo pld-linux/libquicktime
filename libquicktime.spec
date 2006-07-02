@@ -10,7 +10,7 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	0.9.8
+Version:	0.9.9
 Release:	1
 %if %{with gpl}
 License:	GPL
@@ -19,7 +19,7 @@ License:	LGPL
 %endif
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	2efb64ed0e1ccae66d0cadc1e806935a
+# Source0-md5:	4ac23264f22a22ff013722aa9d188190
 Patch0:		%{name}-link.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
@@ -41,6 +41,8 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
+# pkgconfig: x264 >= 0.45
+BuildRequires:	libx264-devel >= 0.1.2-1.20060430_2245
 BuildRequires:	pkgconfig
 BuildRequires:	xorg-lib-libXaw-devel
 BuildRequires:	xorg-lib-libXt-devel
@@ -207,6 +209,19 @@ Ogg Vorbis plugin for libquicktime.
 %description vorbis -l pl
 Wtyczka Ogg Vorbis dla libquicktime.
 
+%package x264
+Summary:	X264 plugin for libquicktime
+Summary(pl):	Wtyczka X264 dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+Requires:	libx264 >= 0.1.2-1.20060430_2245
+
+%description x264
+X264 plugin for libquicktime.
+
+%description x264 -l pl
+Wtyczka X264 dla libquicktime.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -304,3 +319,7 @@ rm -rf $RPM_BUILD_ROOT
 %files vorbis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_vorbis.so
+
+%files x264
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_x264.so
