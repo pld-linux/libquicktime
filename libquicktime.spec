@@ -10,7 +10,7 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	0.9.9
+Version:	0.9.10
 Release:	1
 %if %{with gpl}
 License:	GPL
@@ -19,7 +19,7 @@ License:	LGPL
 %endif
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	4ac23264f22a22ff013722aa9d188190
+# Source0-md5:	5ff99f1a7b22f9e1ed85240f736fd14c
 Patch0:		%{name}-link.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
@@ -42,7 +42,7 @@ BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
 # pkgconfig: x264 >= 0.45
-BuildRequires:	libx264-devel >= 0.1.2-1.20060430_2245
+BuildRequires:	libx264-devel >= 0.1.2-1.20060828_2245
 BuildRequires:	pkgconfig
 BuildRequires:	xorg-lib-libXaw-devel
 BuildRequires:	xorg-lib-libXt-devel
@@ -265,7 +265,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_audiocodec.so
 # R: libjpeg
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_mjpeg.so
-%attr(755,root,root) %{_libdir}/libquicktime/lqt_opendivx.so
 # R: libpng
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_png.so
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_rtjpeg.so
