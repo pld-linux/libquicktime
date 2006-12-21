@@ -11,7 +11,7 @@ Summary:	Library for reading and writing quicktime files
 Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
 Version:	0.9.10
-Release:	1
+Release:	2
 %if %{with gpl}
 License:	GPL
 %else
@@ -21,6 +21,7 @@ Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 # Source0-md5:	5ff99f1a7b22f9e1ed85240f736fd14c
 Patch0:		%{name}-link.patch
+Patch1:		%{name}-x264.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel >= 0.9
@@ -225,6 +226,7 @@ Wtyczka X264 dla libquicktime.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 # evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
 # (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
