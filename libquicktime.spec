@@ -8,7 +8,7 @@
 %define		with_mmx	1
 %endif
 Summary:	Library for reading and writing quicktime files
-Summary(pl.UTF-8):   Biblioteka do odczytu i zapisu plików quicktime
+Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
 Version:	0.9.10
 Release:	2
@@ -101,7 +101,7 @@ oparta na bibliotece quicktime4linux z następującymi zmianami:
 
 %package devel
 Summary:	Header files for libquicktime library
-Summary(pl.UTF-8):   Pliki nagłówkowe biblioteki libquicktime
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libquicktime
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	zlib-devel
@@ -115,7 +115,7 @@ Pliki nagłówkowe biblioteki libquicktime.
 
 %package static
 Summary:	Static libquicktime library
-Summary(pl.UTF-8):   Statyczna biblioteka libquicktime
+Summary(pl.UTF-8):	Statyczna biblioteka libquicktime
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Obsoletes:	quicktime4linux-static
@@ -128,7 +128,7 @@ Statyczna biblioteka libquicktime.
 
 %package utils
 Summary:	libquicktime utilities
-Summary(pl.UTF-8):   Narzędzia do libquicktime
+Summary(pl.UTF-8):	Narzędzia do libquicktime
 Group:		Applications/Multimedia
 Requires:	%{name} = %{version}-%{release}
 
@@ -140,7 +140,7 @@ Narzędzia do libquicktime.
 
 %package dv
 Summary:	DV plugin for libquicktime
-Summary(pl.UTF-8):   Wtyczka DV dla libquicktime
+Summary(pl.UTF-8):	Wtyczka DV dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -152,7 +152,7 @@ Wtyczka DV dla libquicktime.
 
 %package faac
 Summary:	faac plugin for libquicktime
-Summary(pl.UTF-8):   Wtyczka faac dla libquicktime
+Summary(pl.UTF-8):	Wtyczka faac dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -164,7 +164,7 @@ Wtyczka faac dla libquicktime.
 
 %package faad2
 Summary:	faad2 plugin for libquicktime
-Summary(pl.UTF-8):   Wtyczka faad2 dla libquicktime
+Summary(pl.UTF-8):	Wtyczka faad2 dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -176,7 +176,7 @@ Wtyczka faad2 dla libquicktime.
 
 %package ffmpeg
 Summary:	ffmpeg plugin for libquicktime
-Summary(pl.UTF-8):   Wtyczka ffmpeg dla libquicktime
+Summary(pl.UTF-8):	Wtyczka ffmpeg dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -188,7 +188,7 @@ Wtyczka ffmpeg dla libquicktime.
 
 %package lame
 Summary:	lame plugin for libquicktime
-Summary(pl.UTF-8):   Wtyczka lame dla libquicktime
+Summary(pl.UTF-8):	Wtyczka lame dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -200,7 +200,7 @@ Wtyczka lame dla libquicktime.
 
 %package vorbis
 Summary:	Ogg Vorbis plugin for libquicktime
-Summary(pl.UTF-8):   Wtyczka Ogg Vorbis dla libquicktime
+Summary(pl.UTF-8):	Wtyczka Ogg Vorbis dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -212,7 +212,7 @@ Wtyczka Ogg Vorbis dla libquicktime.
 
 %package x264
 Summary:	X264 plugin for libquicktime
-Summary(pl.UTF-8):   Wtyczka X264 dla libquicktime
+Summary(pl.UTF-8):	Wtyczka X264 dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libx264 >= 0.1.2-1.20060430_2245
