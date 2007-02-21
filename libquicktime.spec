@@ -23,6 +23,7 @@ Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-x264.patch
 URL:		http://libquicktime.sourceforge.net/
+BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	alsa-lib-devel >= 0.9
 BuildRequires:	autoconf >= 2.50
