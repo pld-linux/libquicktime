@@ -10,7 +10,7 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	1.0.0
+Version:	1.0.1
 Release:	1
 %if %{with gpl}
 License:	GPL
@@ -19,9 +19,7 @@ License:	LGPL
 %endif
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	2f609e3ef5e760f44022f6c4b66d6a01
-Patch0:		%{name}-link.patch
-Patch1:		%{name}-gtktooltip_2_12.patch
+# Source0-md5:	3146ef9f88ea6a887658ceadac317997
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel >= 0.9
@@ -226,14 +224,13 @@ Wtyczka X264 dla libquicktime.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 # evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
 # (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
 sed -i -e '19,$d;18aAC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' m4/lqt_opt_cflags.m4
 
 %build
+touch config.rpath
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
