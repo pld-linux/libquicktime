@@ -21,6 +21,7 @@ Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 # Source0-md5:	2f609e3ef5e760f44022f6c4b66d6a01
 Patch0:		%{name}-link.patch
+Patch1:		%{name}-gtktooltip_2_12.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel >= 0.9
@@ -226,6 +227,7 @@ Wtyczka X264 dla libquicktime.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 # evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
 # (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
