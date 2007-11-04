@@ -13,9 +13,9 @@ Name:		libquicktime
 Version:	1.0.1
 Release:	1
 %if %{with gpl}
-License:	GPL
+License:	GPL v2+
 %else
-License:	LGPL
+License:	LGPL v2.1+
 %endif
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
@@ -40,7 +40,7 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
-# pkgconfig: x264 >= 0.45
+# pkgconfig: x264 >= 0.48
 BuildRequires:	libx264-devel >= 0.1.2-1.20060828_2245
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
