@@ -8,23 +8,20 @@
 %define		with_mmx	1
 %endif
 Summary:	Library for reading and writing quicktime files
-Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
+Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plikÃ³w quicktime
 Name:		libquicktime
-Version:	0.9.10
+Version:	1.0.2
 Release:	2
 %if %{with gpl}
-License:	GPL
+License:	GPL v2+
 %else
-License:	LGPL
+License:	LGPL v2.1+
 %endif
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	5ff99f1a7b22f9e1ed85240f736fd14c
-Patch0:		%{name}-link.patch
-Patch1:		%{name}-x264.patch
+# Source0-md5:	4a43a44adcfbec398a91c56d1edcbdc1
 URL:		http://libquicktime.sourceforge.net/
-BuildRequires:	OpenGL-devel
-BuildRequires:	XFree86-devel
+BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel >= 0.9
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -43,9 +40,12 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
-# pkgconfig: x264 >= 0.45
+# pkgconfig: x264 >= 0.48
 BuildRequires:	libx264-devel >= 0.1.2-1.20060828_2245
 BuildRequires:	pkgconfig
+BuildRequires:	sed >= 4.0
+BuildRequires:	X11-devel
+BuildRequires:	Xaw3d-devel 
 BuildRequires:	zlib-devel
 Obsoletes:	libquicktime-firewire
 Obsoletes:	libquicktime-firewire-devel
@@ -74,32 +74,32 @@ extensions:
   Applications can get important information about the codecs, their
   settable parameters etc. at runtime.
 
-%description -l pl
-libquicktime to biblioteka do odczytu i zapisu plików quicktime. Jest
-oparta na bibliotece quicktime4linux z nastêpuj±cymi zmianami:
-- drzewo ¼róde³ zosta³o przerobione na u¿ywanie
-  autoconfa/automake'a/libtola itp. narzêdzi, tak jak w standardowych
+%description -l pl.UTF-8
+libquicktime to biblioteka do odczytu i zapisu plikÃ³w quicktime. Jest
+oparta na bibliotece quicktime4linux z nastÄ™pujÄ…cymi zmianami:
+- drzewo ÅºrÃ³deÅ‚ zostaÅ‚o przerobione na uÅ¼ywanie
+  autoconfa/automake'a/libtola itp. narzÄ™dzi, tak jak w standardowych
   bibliotekach linuksowych
-- wszystkie zewnêtrzne biblioteki (jpeg, OggVorbis) zosta³y usuniête w
-  celu zmniejszenia ilo¶ci danych do ¶ci±gania, czasu kompilacji i
-  powielonego kodu na dyskach u¿ytkowników; zamiast tego u¿ywane s±
+- wszystkie zewnÄ™trzne biblioteki (jpeg, OggVorbis) zostaÅ‚y usuniÄ™te w
+  celu zmniejszenia iloÅ›ci danych do Å›ciÄ…gania, czasu kompilacji i
+  powielonego kodu na dyskach uÅ¼ytkownikÃ³w; zamiast tego uÅ¼ywane sÄ…
   biblioteki systemowe
-- wszystkie kodeki zosta³y przeniesione do dynamicznie ³adowanych
-  modu³ów; pozwala to rozprowadzaæ kodeki bez ¼róde³ (lub kodeki z
+- wszystkie kodeki zostaÅ‚y przeniesione do dynamicznie Å‚adowanych
+  moduÅ‚Ã³w; pozwala to rozprowadzaÄ‡ kodeki bez ÅºrÃ³deÅ‚ (lub kodeki z
   niekompatybilnymi licencjami) jako osobne pakiety
-- w przeciwieñstwie do innych bibliotek quicktime jest ¼ród³owo
+- w przeciwieÅ„stwie do innych bibliotek quicktime jest ÅºrÃ³dÅ‚owo
   kompatybilna z quicktime4linux; programy takie jak cinelerra czy
-  xmovie mog± byæ kompilowane z libquicktime
-- kodeki tak¿e s± ¼ród³owo kompatybilne z quicktime4linux, wiêc
-  przenoszenie kodeków pomiêdzy quicktime4linux i libquicktime nie
+  xmovie mogÄ… byÄ‡ kompilowane z libquicktime
+- kodeki takÅ¼e sÄ… ÅºrÃ³dÅ‚owo kompatybilne z quicktime4linux, wiÄ™c
+  przenoszenie kodekÃ³w pomiÄ™dzy quicktime4linux i libquicktime nie
   wymaga zbyt wiele pracy
-- dodano specjalne rozszerzenia API pozwalaj±ce na dostêp do rejestru
-  kodeków; aplikacje mog± pobieraæ wa¿ne informacje o kodekach, ich
-  parametry itp. w czasie dzia³ania aplikacji.
+- dodano specjalne rozszerzenia API pozwalajÄ…ce na dostÄ™p do rejestru
+  kodekÃ³w; aplikacje mogÄ… pobieraÄ‡ waÅ¼ne informacje o kodekach, ich
+  parametry itp. w czasie dziaÅ‚ania aplikacji.
 
 %package devel
 Summary:	Header files for libquicktime library
-Summary(pl):	Pliki nag³ówkowe biblioteki libquicktime
+Summary(pl.UTF-8):	Pliki nagÅ‚Ã³wkowe biblioteki libquicktime
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	zlib-devel
@@ -108,12 +108,12 @@ Obsoletes:	quicktime4linux-devel
 %description devel
 Header files for libquicktime library.
 
-%description devel -l pl
-Pliki nag³ówkowe biblioteki libquicktime.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe biblioteki libquicktime.
 
 %package static
 Summary:	Static libquicktime library
-Summary(pl):	Statyczna biblioteka libquicktime
+Summary(pl.UTF-8):	Statyczna biblioteka libquicktime
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Obsoletes:	quicktime4linux-static
@@ -121,96 +121,96 @@ Obsoletes:	quicktime4linux-static
 %description static
 Static libquicktime library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka libquicktime.
 
 %package utils
 Summary:	libquicktime utilities
-Summary(pl):	Narzêdzia do libquicktime
+Summary(pl.UTF-8):	NarzÄ™dzia do libquicktime
 Group:		Applications/Multimedia
 Requires:	%{name} = %{version}-%{release}
 
 %description utils
 libquicktime utilities.
 
-%description utils -l pl
-Narzêdzia do libquicktime.
+%description utils -l pl.UTF-8
+NarzÄ™dzia do libquicktime.
 
 %package dv
 Summary:	DV plugin for libquicktime
-Summary(pl):	Wtyczka DV dla libquicktime
+Summary(pl.UTF-8):	Wtyczka DV dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description dv
 DV plugin for libquicktime.
 
-%description dv -l pl
+%description dv -l pl.UTF-8
 Wtyczka DV dla libquicktime.
 
 %package faac
 Summary:	faac plugin for libquicktime
-Summary(pl):	Wtyczka faac dla libquicktime
+Summary(pl.UTF-8):	Wtyczka faac dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description faac
 faac plugin for libquicktime.
 
-%description faac -l pl
+%description faac -l pl.UTF-8
 Wtyczka faac dla libquicktime.
 
 %package faad2
 Summary:	faad2 plugin for libquicktime
-Summary(pl):	Wtyczka faad2 dla libquicktime
+Summary(pl.UTF-8):	Wtyczka faad2 dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description faad2
 faad2 plugin for libquicktime.
 
-%description faad2 -l pl
+%description faad2 -l pl.UTF-8
 Wtyczka faad2 dla libquicktime.
 
 %package ffmpeg
 Summary:	ffmpeg plugin for libquicktime
-Summary(pl):	Wtyczka ffmpeg dla libquicktime
+Summary(pl.UTF-8):	Wtyczka ffmpeg dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description ffmpeg
 ffmpeg plugin for libquicktime.
 
-%description ffmpeg -l pl
+%description ffmpeg -l pl.UTF-8
 Wtyczka ffmpeg dla libquicktime.
 
 %package lame
 Summary:	lame plugin for libquicktime
-Summary(pl):	Wtyczka lame dla libquicktime
+Summary(pl.UTF-8):	Wtyczka lame dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description lame
 lame plugin for libquicktime.
 
-%description lame -l pl
+%description lame -l pl.UTF-8
 Wtyczka lame dla libquicktime.
 
 %package vorbis
 Summary:	Ogg Vorbis plugin for libquicktime
-Summary(pl):	Wtyczka Ogg Vorbis dla libquicktime
+Summary(pl.UTF-8):	Wtyczka Ogg Vorbis dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description vorbis
 Ogg Vorbis plugin for libquicktime.
 
-%description vorbis -l pl
+%description vorbis -l pl.UTF-8
 Wtyczka Ogg Vorbis dla libquicktime.
 
 %package x264
 Summary:	X264 plugin for libquicktime
-Summary(pl):	Wtyczka X264 dla libquicktime
+Summary(pl.UTF-8):	Wtyczka X264 dla libquicktime
 Group:		Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libx264 >= 0.1.2-1.20060430_2245
@@ -218,19 +218,18 @@ Requires:	libx264 >= 0.1.2-1.20060430_2245
 %description x264
 X264 plugin for libquicktime.
 
-%description x264 -l pl
+%description x264 -l pl.UTF-8
 Wtyczka X264 dla libquicktime.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 # evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
 # (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
-echo 'AC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' > m4/lqt_opt_cflags.m4
+sed -i -e '19,$d;18aAC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' m4/lqt_opt_cflags.m4
 
 %build
+touch config.rpath
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
@@ -250,17 +249,20 @@ rm -rf $RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/libquicktime/*.{la,a}
 
+%find_lang %{name}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc README TODO
 # R: zlib
 %attr(755,root,root) %{_libdir}/libquicktime.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libquicktime.so.0
 %dir %{_libdir}/libquicktime
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_audiocodec.so
 # R: libjpeg
