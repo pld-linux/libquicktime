@@ -306,6 +306,10 @@ rm -rf $RPM_BUILD_ROOT
 %files faad2
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_faad2.so
+
+%files x264
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_x264.so
 %endif
 
 %if %{with ffmpeg}
@@ -321,7 +325,3 @@ rm -rf $RPM_BUILD_ROOT
 %files vorbis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_vorbis.so
-
-%files x264
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libquicktime/lqt_x264.so
