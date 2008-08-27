@@ -10,8 +10,8 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	1.0.2
-Release:	4
+Version:	1.0.3
+Release:	1
 %if %{with gpl}
 License:	GPL v2+
 %else
@@ -19,8 +19,7 @@ License:	LGPL v2.1+
 %endif
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	4a43a44adcfbec398a91c56d1edcbdc1
-Patch0:		%{name}-ffmpeg.patch
+# Source0-md5:	823191104cdd665c75d447c8f5f8bf7e
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel >= 0.9
@@ -31,13 +30,14 @@ BuildRequires:	faac-devel >= 1.24
 BuildRequires:	faad2-devel >= 2.0
 %endif
 %{?with_ffmpeg:BuildRequires:	ffmpeg-devel >= 0.4.9-4.20080822.6}
+BuildRequires:	gettext-devel >= 0.14.1
 BuildRequires:	gtk+2-devel >= 2:2.4.0
 BuildRequires:	lame-libs-devel >= 3.93
 BuildRequires:	libavc1394-devel >= 0.3.1
 BuildRequires:	libdv-devel >= 0.102
 BuildRequires:	libjpeg-devel >= 6b
 # jpeg-mmx-devel
-BuildRequires:	libpng-devel >= 1.0.8
+BuildRequires:	libpng-devel >= 1.2.23
 BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
@@ -225,7 +225,6 @@ Wtyczka X264 dla libquicktime.
 
 %prep
 %setup -q
-%patch0 -p1
 
 # evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
 # (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
@@ -239,9 +238,11 @@ touch config.rpath
 %{__autoheader}
 %{__automake}
 %configure \
+	ac_cv_lib_iconv_libiconv_close=no \
 	%{?with_gpl:--enable-gpl} \
 	%{!?with_mmx:--disable-mmx} \
-	--enable-static
+	--enable-static \
+	--with-libdv
 %{__make}
 
 %install
