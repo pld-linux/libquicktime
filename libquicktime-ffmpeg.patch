@@ -1,0 +1,70 @@
+diff -U 3 -H -d -r -N -- libquicktime-1.0.3~/plugins/ffmpeg/audio.c libquicktime-1.0.3/plugins/ffmpeg/audio.c
+--- libquicktime-1.0.3~/plugins/ffmpeg/audio.c	2007-11-11 01:38:12.000000000 +0100
++++ libquicktime-1.0.3/plugins/ffmpeg/audio.c	2008-10-12 11:03:32.000000000 +0200
+@@ -671,7 +671,7 @@
+     //  priv->ctx->block_align     = s->data.audio.block_align;
+     //  priv->ctx->bit_rate        = s->codec_bitrate;
+ 
+-    codec->avctx->bits_per_sample = quicktime_audio_bits(file, track);
++    codec->avctx->bits_per_coded_sample = quicktime_audio_bits(file, track);
+ 
+     /* Some codecs need extra stuff */
+ 
+diff -U 3 -H -d -r -N -- libquicktime-1.0.3~/plugins/ffmpeg/lqt_ffmpeg.c libquicktime-1.0.3/plugins/ffmpeg/lqt_ffmpeg.c
+--- libquicktime-1.0.3~/plugins/ffmpeg/lqt_ffmpeg.c	2008-05-28 23:57:45.000000000 +0200
++++ libquicktime-1.0.3/plugins/ffmpeg/lqt_ffmpeg.c	2008-10-12 11:04:47.000000000 +0200
+@@ -76,8 +76,7 @@
+     PARAM_QSCALE, \
+     PARAM_QCOMPRESS, \
+     PARAM_QBLUR, \
+-    PARAM_QUANTIZER_NOISE_SHAPING, \
+-    PARAM_FLAG_TRELLIS_QUANT
++    PARAM_QUANTIZER_NOISE_SHAPING
+ 
+ #define ENCODE_PARAM_VIDEO_QUANTIZER_IP \
+   ENCODE_PARAM_VIDEO_QUANTIZER_I, \
+diff -U 3 -H -d -r -N -- libquicktime-1.0.3~/plugins/ffmpeg/params.c libquicktime-1.0.3/plugins/ffmpeg/params.c
+--- libquicktime-1.0.3~/plugins/ffmpeg/params.c	2008-05-14 22:50:41.000000000 +0200
++++ libquicktime-1.0.3/plugins/ffmpeg/params.c	2008-10-12 11:04:25.000000000 +0200
+@@ -241,7 +241,6 @@
+   PARAM_FLAG("ff_flag_emu_edge",CODEC_FLAG_EMU_EDGE);
+   PARAM_FLAG("ff_flag_normalize_aqp",CODEC_FLAG_NORMALIZE_AQP);
+   PARAM_FLAG("ff_flag_alt_scan",CODEC_FLAG_ALT_SCAN);
+-  PARAM_FLAG("ff_flag_trellis_quant",CODEC_FLAG_TRELLIS_QUANT);
+   PARAM_FLAG("ff_flag_bitexact",CODEC_FLAG_BITEXACT);
+   PARAM_FLAG("ff_flag_ac_pred",CODEC_FLAG_AC_PRED);
+   PARAM_FLAG("ff_flag_h263p_umv",CODEC_FLAG_H263P_UMV);
+diff -U 3 -H -d -r -N -- libquicktime-1.0.3~/plugins/ffmpeg/params.h libquicktime-1.0.3/plugins/ffmpeg/params.h
+--- libquicktime-1.0.3~/plugins/ffmpeg/params.h	2007-09-04 01:26:48.000000000 +0200
++++ libquicktime-1.0.3/plugins/ffmpeg/params.h	2008-10-12 11:04:14.000000000 +0200
+@@ -1031,18 +1031,6 @@
+     .val_max =     { .val_int = 1 }, \
+   }
+ 
+-/** Quantizer */
+-#define PARAM_FLAG_TRELLIS_QUANT \
+-  { \
+-    .name =        "ff_flag_trellis_quant", \
+-    .real_name =   TRS("Use trellis quantization"),     \
+-    .type =        LQT_PARAMETER_INT, \
+-    .val_default = { .val_int = 0 }, \
+-    .val_min =     { .val_int = 0 }, \
+-    .val_max =     { .val_int = 1 }, \
+-       .help_string = TRS("Use trellis quantization (improves quality)") \
+-  }
+-
+ #define PARAM_FLAG_BITEXACT \
+   { \
+     .name =        "ff_flag_bitexact", \
+diff -U 3 -H -d -r -N -- libquicktime-1.0.3~/plugins/ffmpeg/video.c libquicktime-1.0.3/plugins/ffmpeg/video.c
+--- libquicktime-1.0.3~/plugins/ffmpeg/video.c	2008-05-28 23:57:45.000000000 +0200
++++ libquicktime-1.0.3/plugins/ffmpeg/video.c	2008-10-12 11:03:41.000000000 +0200
+@@ -377,7 +377,7 @@
+     {
+     codec->avctx->width           = width;
+     codec->avctx->height          = height;
+-    codec->avctx->bits_per_sample = quicktime_video_depth(file, track);
++    codec->avctx->bits_per_coded_sample = quicktime_video_depth(file, track);
+ 
+     /* Set extradata: It's done differently for each codec */
+ 
