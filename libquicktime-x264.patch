@@ -1,0 +1,24 @@
+--- libquicktime-1.0.3/plugins/x264/x264.c.org	2008-11-02 20:24:07.710502033 +0100
++++ libquicktime-1.0.3/plugins/x264/x264.c	2008-11-02 20:25:53.517157473 +0100
+@@ -776,7 +776,7 @@
+   INTPARAM("x264_i_keyint_min", codec->params.i_keyint_min);
+   INTPARAM("x264_i_scenecut_threshold", codec->params.i_scenecut_threshold);
+   INTPARAM("x264_i_bframe", codec->params.i_bframe);
+-  INTPARAM("x264_b_bframe_adaptive", codec->params.b_bframe_adaptive);
++  INTPARAM("x264_i_bframe_adaptive", codec->params.i_bframe_adaptive);
+   INTPARAM("x264_i_bframe_bias", codec->params.i_bframe_bias);
+   INTPARAM("x264_b_bframe_pyramid", codec->params.b_bframe_pyramid);
+ 
+@@ -867,12 +867,10 @@
+   ENUMPARAM("x264_i_me_method", codec->params.analyse.i_me_method, me_methods);
+ 
+   INTPARAM("x264_i_subpel_refine", codec->params.analyse.i_subpel_refine);
+-  INTPARAM("x264_b_bframe_rdo", codec->params.analyse.b_bframe_rdo);
+   INTPARAM("x264_i_me_range", codec->params.analyse.i_me_range);
+   INTPARAM("x264_i_frame_reference", codec->params.i_frame_reference);
+   INTPARAM("x264_b_chroma_me", codec->params.analyse.b_chroma_me);
+   INTPARAM("x264_b_mixed_references", codec->params.analyse.b_mixed_references);
+-  INTPARAM("x264_b_bidir_me", codec->params.analyse.b_bidir_me);
+   INTPARAM("x264_b_weighted_bipred", codec->params.analyse.b_weighted_bipred);
+     
+   ENUMPARAM("x264_i_direct_mv_pred", codec->params.analyse.i_direct_mv_pred, direct_modes);
