@@ -10,8 +10,8 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	1.0.3
-Release:	8
+Version:	1.1.4
+Release:	1
 %if %{with gpl}
 License:	GPL v2+
 %else
@@ -19,9 +19,7 @@ License:	LGPL v2.1+
 %endif
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	823191104cdd665c75d447c8f5f8bf7e
-Patch0:		%{name}-ffmpeg.patch
-Patch1:		%{name}-x264.patch
+# Source0-md5:	ee4f8602e67a445ba906f809a83e0c34
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel >= 0.9
@@ -46,6 +44,7 @@ BuildRequires:	libvorbis-devel >= 1:1.0
 # pkgconfig: x264 >= 0.48
 BuildRequires:	libx264-devel >= 0.1.2-1.20060828_2245
 BuildRequires:	pkgconfig
+BuildRequires:	schroedinger-devel
 BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libXaw-devel
 BuildRequires:	xorg-lib-libXt-devel
@@ -225,10 +224,20 @@ X264 plugin for libquicktime.
 %description x264 -l pl.UTF-8
 Wtyczka X264 dla libquicktime.
 
+%package schroedinger
+Summary:	schroedinger plugin for libquicktime
+Summary(pl.UTF-8):	Wtyczka schroedinger dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description schroedinger
+schroedinger plugin for libquicktime.
+
+%description schroedinger -l pl.UTF-8
+Wtyczka schroedinger dla libquicktime.
+
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 # evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
 # (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
@@ -329,6 +338,10 @@ rm -rf $RPM_BUILD_ROOT
 %files vorbis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_vorbis.so
+
+%files schroedinger
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_schroedinger.so
 
 %if %{with gpl}
 %files x264
