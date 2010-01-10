@@ -11,7 +11,7 @@ Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
 Version:	1.1.4
-Release:	2
+Release:	3
 %if %{with gpl}
 License:	GPL v2+
 %else
@@ -44,7 +44,7 @@ BuildRequires:	libvorbis-devel >= 1:1.0
 # pkgconfig: x264 >= 0.48
 BuildRequires:	libx264-devel >= 0.1.2-1.20060828_2245
 BuildRequires:	pkgconfig
-BuildRequires:	schroedinger-devel
+BuildRequires:	schroedinger-devel >= 1.0.5
 BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libXaw-devel
 BuildRequires:	xorg-lib-libXt-devel
