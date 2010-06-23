@@ -10,8 +10,8 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	1.1.4
-Release:	5
+Version:	1.1.5
+Release:	1
 %if %{with gpl}
 License:	GPL v2+
 %else
@@ -19,7 +19,7 @@ License:	LGPL v2.1+
 %endif
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	ee4f8602e67a445ba906f809a83e0c34
+# Source0-md5:	0fd45b3deff0317c2f85a34b1b106acf
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel >= 0.9
