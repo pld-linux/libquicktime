@@ -3,7 +3,7 @@
 %bcond_with	mmx	# use MMX in rtjpeg plugin (no runtime detection)
 %bcond_without	ffmpeg	# ffmpeg plugin
 %bcond_without	gpl	# build LGPL library (disables some plugins)
-#
+
 %ifarch athlon pentium3 pentium4 %{x8664}
 %define		with_mmx	1
 %endif
@@ -18,7 +18,7 @@ License:	GPL v2+
 License:	LGPL v2.1+
 %endif
 Group:		Libraries
-Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 # Source0-md5:	0fd45b3deff0317c2f85a34b1b106acf
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
@@ -44,12 +44,17 @@ BuildRequires:	libvorbis-devel >= 1:1.0
 # pkgconfig: x264 >= 0.48
 BuildRequires:	libx264-devel >= 0.1.2-1.20060828_2245
 BuildRequires:	pkgconfig
+BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	schroedinger-devel >= 1.0.5
 BuildRequires:	sed >= 4.0
+BuildRequires:	zlib-devel
+%if "%{pld_release}" == "ac"
+BuildRequires:	XFree86-devel
+%else
 BuildRequires:	xorg-lib-libXaw-devel
 BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	xorg-lib-libXv-devel
-BuildRequires:	zlib-devel
+%endif
 Obsoletes:	libquicktime-firewire
 Obsoletes:	libquicktime-firewire-devel
 Obsoletes:	libquicktime-firewire-static
