@@ -239,6 +239,8 @@ Wtyczka schroedinger dla libquicktime.
 %prep
 %setup -q
 
+rm -f m4/libtool.m4 m4/lt*.m4
+
 # evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
 # (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
 sed -i -e '19,$d;18aAC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' m4/lqt_opt_cflags.m4
