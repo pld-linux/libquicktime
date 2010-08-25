@@ -1,40 +1,63 @@
 #
 # Conditional build:
-%bcond_with	mmx	# use MMX in rtjpeg plugin
-#
+%bcond_with	mmx	# use MMX in rtjpeg plugin (no runtime detection)
+%bcond_without	ffmpeg	# ffmpeg plugin
+%bcond_without	gpl	# build LGPL library (disables some plugins)
+
 %ifarch athlon pentium3 pentium4 %{x8664}
-%define	with_mmx	1
+%define		with_mmx	1
 %endif
-# TODO
-# - libavcodec: Missing (ffmpeg?)
 Summary:	Library for reading and writing quicktime files
-Summary(pl):	Biblioteka do odczytu i zapisu plików quicktime
+Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plikÃ³w quicktime
 Name:		libquicktime
-Version:	0.9.7
-Release:	3
-License:	LGPL
+Version:	1.1.5
+Release:	1
+%if %{with gpl}
+License:	GPL v2+
+%else
+License:	LGPL v2.1+
+%endif
 Group:		Libraries
-Source0:	http://dl.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	e5c977567df59c876c50ac191bb1caf6
-Patch0:		%{name}-link.patch
+Source0:	http://downloads.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
+# Source0-md5:	0fd45b3deff0317c2f85a34b1b106acf
 URL:		http://libquicktime.sourceforge.net/
-BuildRequires:	XFree86-devel
+BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel >= 0.9
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
-# avcodec-acl = 0.4.8acl ???
-BuildRequires:	ffmpeg-devel
+%if %{with gpl}
+BuildRequires:	faac-devel >= 1.24
+BuildRequires:	faad2-devel >= 2.0
+%endif
+%{?with_ffmpeg:BuildRequires:	ffmpeg-devel >= 0.4.9-4.20080822.6}
+BuildRequires:	gettext-devel >= 0.14.1
 BuildRequires:	gtk+2-devel >= 2:2.4.0
 BuildRequires:	lame-libs-devel >= 3.93
 BuildRequires:	libavc1394-devel >= 0.3.1
 BuildRequires:	libdv-devel >= 0.102
 BuildRequires:	libjpeg-devel >= 6b
 # jpeg-mmx-devel
-BuildRequires:	libpng-devel >= 1.0.8
+BuildRequires:	libpng-devel >= 1.2.23
 BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
+# pkgconfig: x264 >= 0.48
+BuildRequires:	libx264-devel >= 0.1.2-1.20060828_2245
+BuildRequires:	pkgconfig
+BuildRequires:	rpm >= 4.4.9-56
+BuildRequires:	schroedinger-devel >= 1.0.5
+BuildRequires:	sed >= 4.0
 BuildRequires:	zlib-devel
+%if "%{pld_release}" == "ac"
+BuildRequires:	XFree86-devel
+%else
+BuildRequires:	xorg-lib-libXaw-devel
+BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xorg-lib-libXv-devel
+%endif
+Obsoletes:	libquicktime-firewire
+Obsoletes:	libquicktime-firewire-devel
+Obsoletes:	libquicktime-firewire-static
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -59,82 +82,188 @@ extensions:
   Applications can get important information about the codecs, their
   settable parameters etc. at runtime.
 
-%description -l pl
-libquicktime to biblioteka do odczytu i zapisu plików quicktime. Jest
-oparta na bibliotece quicktime4linux z nastêpuj±cymi zmianami:
-- drzewo ¼róde³ zosta³o przerobione na u¿ywanie
-  autoconfa/automake'a/libtola itp. narzêdzi, tak jak w standardowych
+%description -l pl.UTF-8
+libquicktime to biblioteka do odczytu i zapisu plikÃ³w quicktime. Jest
+oparta na bibliotece quicktime4linux z nastÄ™pujÄ…cymi zmianami:
+- drzewo ÅºrÃ³deÅ‚ zostaÅ‚o przerobione na uÅ¼ywanie
+  autoconfa/automake'a/libtola itp. narzÄ™dzi, tak jak w standardowych
   bibliotekach linuksowych
-- wszystkie zewnêtrzne biblioteki (jpeg, OggVorbis) zosta³y usuniête w
-  celu zmniejszenia ilo¶ci danych do ¶ci±gania, czasu kompilacji i
-  powielonego kodu na dyskach u¿ytkowników; zamiast tego u¿ywane s±
+- wszystkie zewnÄ™trzne biblioteki (jpeg, OggVorbis) zostaÅ‚y usuniÄ™te w
+  celu zmniejszenia iloÅ›ci danych do Å›ciÄ…gania, czasu kompilacji i
+  powielonego kodu na dyskach uÅ¼ytkownikÃ³w; zamiast tego uÅ¼ywane sÄ…
   biblioteki systemowe
-- wszystkie kodeki zosta³y przeniesione do dynamicznie ³adowanych
-  modu³ów; pozwala to rozprowadzaæ kodeki bez ¼róde³ (lub kodeki z
+- wszystkie kodeki zostaÅ‚y przeniesione do dynamicznie Å‚adowanych
+  moduÅ‚Ã³w; pozwala to rozprowadzaÄ‡ kodeki bez ÅºrÃ³deÅ‚ (lub kodeki z
   niekompatybilnymi licencjami) jako osobne pakiety
-- w przeciwieñstwie do innych bibliotek quicktime jest ¼ród³owo
+- w przeciwieÅ„stwie do innych bibliotek quicktime jest ÅºrÃ³dÅ‚owo
   kompatybilna z quicktime4linux; programy takie jak cinelerra czy
-  xmovie mog± byæ kompilowane z libquicktime
-- kodeki tak¿e s± ¼ród³owo kompatybilne z quicktime4linux, wiêc
-  przenoszenie kodeków pomiêdzy quicktime4linux i libquicktime nie
+  xmovie mogÄ… byÄ‡ kompilowane z libquicktime
+- kodeki takÅ¼e sÄ… ÅºrÃ³dÅ‚owo kompatybilne z quicktime4linux, wiÄ™c
+  przenoszenie kodekÃ³w pomiÄ™dzy quicktime4linux i libquicktime nie
   wymaga zbyt wiele pracy
-- dodano specjalne rozszerzenia API pozwalaj±ce na dostêp do rejestru
-  kodeków; aplikacje mog± pobieraæ wa¿ne informacje o kodekach, ich
-  parametry itp. w czasie dzia³ania aplikacji.
+- dodano specjalne rozszerzenia API pozwalajÄ…ce na dostÄ™p do rejestru
+  kodekÃ³w; aplikacje mogÄ… pobieraÄ‡ waÅ¼ne informacje o kodekach, ich
+  parametry itp. w czasie dziaÅ‚ania aplikacji.
 
 %package devel
 Summary:	Header files for libquicktime library
-Summary(pl):	Pliki nag³ówkowe biblioteki libquicktime
+Summary(pl.UTF-8):	Pliki nagÅ‚Ã³wkowe biblioteki libquicktime
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	zlib-devel
+Obsoletes:	quicktime4linux-devel
 
 %description devel
 Header files for libquicktime library.
 
-%description devel -l pl
-Pliki nag³ówkowe biblioteki libquicktime.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe biblioteki libquicktime.
 
 %package static
 Summary:	Static libquicktime library
-Summary(pl):	Statyczna biblioteka libquicktime
+Summary(pl.UTF-8):	Statyczna biblioteka libquicktime
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
+Obsoletes:	quicktime4linux-static
 
 %description static
 Static libquicktime library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka libquicktime.
 
 %package utils
 Summary:	libquicktime utilities
-Summary(pl):	Narzêdzia do libquicktime
+Summary(pl.UTF-8):	NarzÄ™dzia do libquicktime
 Group:		Applications/Multimedia
 Requires:	%{name} = %{version}-%{release}
 
 %description utils
 libquicktime utilities.
 
-%description utils -l pl
-Narzêdzia do libquicktime.
+%description utils -l pl.UTF-8
+NarzÄ™dzia do libquicktime.
+
+%package dv
+Summary:	DV plugin for libquicktime
+Summary(pl.UTF-8):	Wtyczka DV dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description dv
+DV plugin for libquicktime.
+
+%description dv -l pl.UTF-8
+Wtyczka DV dla libquicktime.
+
+%package faac
+Summary:	faac plugin for libquicktime
+Summary(pl.UTF-8):	Wtyczka faac dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description faac
+faac plugin for libquicktime.
+
+%description faac -l pl.UTF-8
+Wtyczka faac dla libquicktime.
+
+%package faad2
+Summary:	faad2 plugin for libquicktime
+Summary(pl.UTF-8):	Wtyczka faad2 dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description faad2
+faad2 plugin for libquicktime.
+
+%description faad2 -l pl.UTF-8
+Wtyczka faad2 dla libquicktime.
+
+%package ffmpeg
+Summary:	ffmpeg plugin for libquicktime
+Summary(pl.UTF-8):	Wtyczka ffmpeg dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description ffmpeg
+ffmpeg plugin for libquicktime.
+
+%description ffmpeg -l pl.UTF-8
+Wtyczka ffmpeg dla libquicktime.
+
+%package lame
+Summary:	lame plugin for libquicktime
+Summary(pl.UTF-8):	Wtyczka lame dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description lame
+lame plugin for libquicktime.
+
+%description lame -l pl.UTF-8
+Wtyczka lame dla libquicktime.
+
+%package vorbis
+Summary:	Ogg Vorbis plugin for libquicktime
+Summary(pl.UTF-8):	Wtyczka Ogg Vorbis dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description vorbis
+Ogg Vorbis plugin for libquicktime.
+
+%description vorbis -l pl.UTF-8
+Wtyczka Ogg Vorbis dla libquicktime.
+
+%package x264
+Summary:	X264 plugin for libquicktime
+Summary(pl.UTF-8):	Wtyczka X264 dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+Requires:	libx264 >= 0.1.2-1.20060430_2245
+
+%description x264
+X264 plugin for libquicktime.
+
+%description x264 -l pl.UTF-8
+Wtyczka X264 dla libquicktime.
+
+%package schroedinger
+Summary:	schroedinger plugin for libquicktime
+Summary(pl.UTF-8):	Wtyczka schroedinger dla libquicktime
+Group:		Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description schroedinger
+schroedinger plugin for libquicktime.
+
+%description schroedinger -l pl.UTF-8
+Wtyczka schroedinger dla libquicktime.
 
 %prep
 %setup -q
-%patch0 -p1
 
-# evil, sets CFLAGS basing on /proc/cpuinfo
-echo 'AC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' > m4/lqt_opt_cflags.m4
+rm -f m4/libtool.m4 m4/lt*.m4
+
+# evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
+# (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
+sed -i -e '19,$d;18aAC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' m4/lqt_opt_cflags.m4
 
 %build
+touch config.rpath
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
 %configure \
+	ac_cv_lib_iconv_libiconv_close=no \
+	%{?with_gpl:--enable-gpl} \
 	%{!?with_mmx:--disable-mmx} \
-	--enable-static
+	--enable-static \
+	--without-doxygen \
+	--with-libdv
 %{__make}
 
 %install
@@ -145,45 +274,34 @@ rm -rf $RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/libquicktime/*.{la,a}
 
+%find_lang %{name}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc README TODO
-%attr(755,root,root) %{_bindir}/lqtvrplay
-# R: glib, zlib
+# R: zlib
 %attr(755,root,root) %{_libdir}/libquicktime.so.*.*.*
-# R: libdv, libraw1394, libavc1394
-%attr(755,root,root) %{_libdir}/libquicktime1394.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libquicktime.so.0
 %dir %{_libdir}/libquicktime
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_audiocodec.so
-# R: libdv
-%attr(755,root,root) %{_libdir}/libquicktime/lqt_dv.so
-# R: avcodec-acl (ffmpeg?)
-#%attr(755,root,root) %{_libdir}/libquicktime/lqt_ffmpeg.so
-# R: lame-libs
-%attr(755,root,root) %{_libdir}/libquicktime/lqt_lame.so
 # R: libjpeg
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_mjpeg.so
-%attr(755,root,root) %{_libdir}/libquicktime/lqt_opendivx.so
 # R: libpng
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_png.so
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_rtjpeg.so
 %attr(755,root,root) %{_libdir}/libquicktime/lqt_videocodec.so
-# R: libogg, libvorbis
-%attr(755,root,root) %{_libdir}/libquicktime/lqt_vorbis.so
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/lqt-config
 %attr(755,root,root) %{_libdir}/libquicktime.so
-%attr(755,root,root) %{_libdir}/libquicktime1394.so
 %{_libdir}/libquicktime.la
-%{_libdir}/libquicktime1394.la
 %{_includedir}/lqt
 %{_aclocaldir}/lqt.m4
 %{_pkgconfigdir}/libquicktime.pc
@@ -191,7 +309,6 @@ rm -rf $RPM_BUILD_ROOT
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libquicktime.a
-%{_libdir}/libquicktime1394.a
 
 %files utils
 %defattr(644,root,root,755)
@@ -200,3 +317,41 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/lqt_transcode
 %attr(755,root,root) %{_bindir}/qt*
 %{_mandir}/man1/lqtplay.1*
+
+%files dv
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_dv.so
+
+%if %{with gpl}
+%files faac
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_faac.so
+
+%files faad2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_faad2.so
+%endif
+
+%if %{with ffmpeg}
+%files ffmpeg
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_ffmpeg.so
+%endif
+
+%files lame
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_lame.so
+
+%files vorbis
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_vorbis.so
+
+%files schroedinger
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_schroedinger.so
+
+%if %{with gpl}
+%files x264
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquicktime/lqt_x264.so
+%endif
