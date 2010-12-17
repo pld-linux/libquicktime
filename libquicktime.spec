@@ -10,8 +10,8 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	1.1.5
-Release:	2
+Version:	1.2.1
+Release:	1
 %if %{with gpl}
 License:	GPL v2+
 %else
@@ -19,9 +19,11 @@ License:	LGPL v2.1+
 %endif
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	0fd45b3deff0317c2f85a34b1b106acf
+# Source0-md5:	cbc0b09a95cab685b4b21201db85c6f2
+Patch0:		%{name}-gtk.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
+BuildRequires:	OpenGL-GLX-devel
 BuildRequires:	alsa-lib-devel >= 0.9
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -243,15 +245,15 @@ Wtyczka schroedinger dla libquicktime.
 
 %prep
 %setup -q
+%patch0 -p1
 
-rm -f m4/libtool.m4 m4/lt*.m4
+%{__rm} m4/libtool.m4 m4/lt*.m4
 
 # evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
 # (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
 sed -i -e '19,$d;18aAC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' m4/lqt_opt_cflags.m4
 
 %build
-touch config.rpath
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
@@ -272,7 +274,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/libquicktime/*.{la,a}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libquicktime/*.{la,a}
 
 %find_lang %{name}
 
@@ -299,11 +301,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/lqt-config
 %attr(755,root,root) %{_libdir}/libquicktime.so
 %{_libdir}/libquicktime.la
 %{_includedir}/lqt
-%{_aclocaldir}/lqt.m4
 %{_pkgconfigdir}/libquicktime.pc
 
 %files static
@@ -314,8 +314,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/libquicktime_config
 %attr(755,root,root) %{_bindir}/lqtplay
+%attr(755,root,root) %{_bindir}/lqtremux
 %attr(755,root,root) %{_bindir}/lqt_transcode
-%attr(755,root,root) %{_bindir}/qt*
+%attr(755,root,root) %{_bindir}/qt2text
+%attr(755,root,root) %{_bindir}/qtdechunk
+%attr(755,root,root) %{_bindir}/qtdump
+%attr(755,root,root) %{_bindir}/qtinfo
+%attr(755,root,root) %{_bindir}/qtrechunk
+%attr(755,root,root) %{_bindir}/qtstreamize
+%attr(755,root,root) %{_bindir}/qtyuv4toyuv
 %{_mandir}/man1/lqtplay.1*
 
 %files dv
