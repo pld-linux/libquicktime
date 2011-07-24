@@ -11,7 +11,7 @@ Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
 Version:	1.2.3
-Release:	2
+Release:	3
 %if %{with gpl}
 License:	GPL v2+
 %else
@@ -247,7 +247,7 @@ Wtyczka schroedinger dla libquicktime.
 %setup -q
 %patch0 -p1
 
-%{__rm} m4/libtool.m4 m4/lt*.m4
+%{__rm} m4/libtool.m4 m4/lt*.m4 m4/vorbis.m4
 
 # evil, sets CFLAGS basing on /proc/cpuinfo, overrides our optflags
 # (--with-cpuflags=none disables using /proc/cpuinfo, but not overriding)
@@ -264,6 +264,7 @@ sed -i -e '19,$d;18aAC_DEFUN([LQT_OPT_CFLAGS],[OPT_CFLAGS="$CFLAGS"])' m4/lqt_op
 	%{?with_gpl:--enable-gpl} \
 	%{!?with_mmx:--disable-mmx} \
 	--enable-static \
+	--with-vorbis \
 	--without-doxygen \
 	--with-libdv
 %{__make}
