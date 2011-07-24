@@ -13,18 +13,3 @@ Index: libquicktime-1.2.2/plugins/ffmpeg/lqt_ffmpeg.c
         codec_info_ffmpeg.type = LQT_CODEC_VIDEO;
    } else {
         codec_info_ffmpeg.type = LQT_CODEC_AUDIO;
-Index: libquicktime-1.2.2/plugins/ffmpeg/params.c
-===================================================================
---- libquicktime-1.2.2.orig/plugins/ffmpeg/params.c
-+++ libquicktime-1.2.2/plugins/ffmpeg/params.c
-@@ -205,8 +205,10 @@ void lqt_ffmpeg_set_parameter(AVCodecCon
-   PARAM_FLOAT("ff_p_masking",p_masking);
-   PARAM_FLOAT("ff_dark_masking",dark_masking);
-   PARAM_ENUM("ff_prediction_method",prediction_method,prediction_method);
-+#if LIBAVCODEC_VERSION_MAJOR < 53
-   PARAM_INT("ff_mb_qmin",mb_qmin);
-   PARAM_INT("ff_mb_qmax",mb_qmax);
-+#endif
-   PARAM_ENUM("ff_me_cmp",me_cmp,compare_func);
-   PARAM_CMP_CHROMA("ff_me_cmp_chroma",me_cmp);
-   PARAM_ENUM("ff_me_sub_cmp",me_sub_cmp,compare_func);

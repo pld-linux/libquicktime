@@ -10,8 +10,8 @@
 Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
-Version:	1.2.1
-Release:	3
+Version:	1.2.3
+Release:	1
 %if %{with gpl}
 License:	GPL v2+
 %else
@@ -19,9 +19,8 @@ License:	LGPL v2.1+
 %endif
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
-# Source0-md5:	cbc0b09a95cab685b4b21201db85c6f2
-Patch0:		%{name}-gtk.patch
-Patch1:		%{name}-ffmpeg07.patch
+# Source0-md5:	9a82a1546408605ea8337b3a7c78786e
+Patch0:		%{name}-ffmpeg07.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	OpenGL-GLX-devel
@@ -33,14 +32,13 @@ BuildRequires:	faac-devel >= 1.24
 BuildRequires:	faad2-devel >= 2.0
 %endif
 %{?with_ffmpeg:BuildRequires:	ffmpeg-devel >= 0.7.1}
-BuildRequires:	gettext-devel >= 0.14.1
+BuildRequires:	gettext-devel >= 0.17
 BuildRequires:	gtk+2-devel >= 2:2.4.0
 BuildRequires:	lame-libs-devel >= 3.93
 BuildRequires:	libavc1394-devel >= 0.3.1
 BuildRequires:	libdv-devel >= 0.102
 BuildRequires:	libjpeg-devel >= 6b
-# jpeg-mmx-devel
-BuildRequires:	libpng-devel >= 1.2.23
+BuildRequires:	libpng-devel >= 2:1.2.23
 BuildRequires:	libraw1394-devel >= 0.9
 BuildRequires:	libtool
 BuildRequires:	libvorbis-devel >= 1:1.0
@@ -140,6 +138,7 @@ Summary:	libquicktime utilities
 Summary(pl.UTF-8):	Narzędzia do libquicktime
 Group:		Applications/Multimedia
 Requires:	%{name} = %{version}-%{release}
+Requires:	gtk+2 >= 2:2.4.0
 
 %description utils
 libquicktime utilities.
@@ -247,7 +246,6 @@ Wtyczka schroedinger dla libquicktime.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %{__rm} m4/libtool.m4 m4/lt*.m4
 
