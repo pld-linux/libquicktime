@@ -11,7 +11,7 @@ Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
 Version:	1.2.4
-Release:	1
+Release:	2
 %if %{with gpl}
 License:	GPL v2+
 %else
