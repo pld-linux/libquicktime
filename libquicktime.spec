@@ -21,6 +21,7 @@ Group:		Libraries
 Source0:	http://downloads.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 # Source0-md5:	81cfcebad9b7ee7e7cfbefc861d6d61b
 Patch0:		%{name}-ffmpeg07.patch
+Patch1:		%{name}-ffmpeg2.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	OpenGL-GLX-devel
@@ -246,6 +247,7 @@ Wtyczka schroedinger dla libquicktime.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %{__rm} m4/libtool.m4 m4/lt*.m4 m4/vorbis.m4
 
