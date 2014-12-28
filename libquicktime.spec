@@ -33,7 +33,7 @@ BuildRequires:	faac-devel >= 1.24
 BuildRequires:	faad2-devel >= 2.0
 %endif
 %{?with_ffmpeg:BuildRequires:	ffmpeg-devel >= 0.7.1}
-BuildRequires:	gettext-devel >= 0.17
+BuildRequires:	gettext-tools >= 0.17
 BuildRequires:	gtk+2-devel >= 2:2.4.0
 BuildRequires:	lame-libs-devel >= 3.93
 BuildRequires:	libavc1394-devel >= 0.3.1
