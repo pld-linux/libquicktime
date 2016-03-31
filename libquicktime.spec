@@ -11,7 +11,7 @@ Summary:	Library for reading and writing quicktime files
 Summary(pl.UTF-8):	Biblioteka do odczytu i zapisu plików quicktime
 Name:		libquicktime
 Version:	1.2.4
-Release:	7
+Release:	8
 %if %{with gpl}
 License:	GPL v2+
 %else
@@ -22,6 +22,7 @@ Source0:	http://downloads.sourceforge.net/libquicktime/%{name}-%{version}.tar.gz
 # Source0-md5:	81cfcebad9b7ee7e7cfbefc861d6d61b
 Patch0:		%{name}-ffmpeg07.patch
 Patch1:		%{name}-ffmpeg2.patch
+Patch2:		ffmpeg3.patch
 URL:		http://libquicktime.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	OpenGL-GLX-devel
@@ -248,6 +249,7 @@ Wtyczka schroedinger dla libquicktime.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %{__rm} m4/libtool.m4 m4/lt*.m4 m4/vorbis.m4
 
