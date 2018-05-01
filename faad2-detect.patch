@@ -1,0 +1,11 @@
+--- libquicktime-1.2.4/configure.ac~	2012-03-29 21:44:28.000000000 +0200
++++ libquicktime-1.2.4/configure.ac	2018-05-01 14:02:56.483828440 +0200
+@@ -746,8 +746,6 @@
+     int faad_minor;
+     faacDecHandle dec;
+ 
+-    if(sscanf(FAAD2_VERSION, "%d.%d", &faad_major, &faad_minor) < 2)
+-      return -1;
+     dec = faacDecOpen();
+     if(!dec)
+       return -1;
